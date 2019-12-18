@@ -1,0 +1,93 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\title{Frame-Stewart}
+\author{mb.t.c1993 }
+\date{December 2019}
+
+\begin{document}
+
+\maketitle
+
+\section{Defining the Solutions}
+\begin{itemize}
+    \item Let $H_K(n)$ be the minimal number of moves necessary to move $n$ Hanoi discs with $k$ pegs.
+
+    \item sequence of moves $S$ is a minimal sequence if it has $H_K(n)$ moves
+
+    \item We designate the portion of sequence of $S$ through the triple $(n,\infty,\infty$)  as the demolishing phase, and the portion following the triple through the end as the reconstruction phase. In a minimal sequence we must have the triple $(n,\infty,\infty)$ exactly once.
+
+    \item If $S$ is a minimal solution, its demolishing phase must have length $\frac{H_K(n)+1}{2}$ and its reconstruction phase must have length $\frac{H_K(n)-1}{2}$. This is because a demolishing phase can be used to construct a reconstruction phase, and a reconstruction phase can be used to construct a demolishing phase. For example, given a demolishing phase where the $l$th move is $(n,\infty,\infty)$, for every
+    $u<l$ let $(r,s,y)$ be the $l-u$th move, we set the $l+u$th move to be $(r,y,s)$. Such a sequence is called symmetric
+
+    \item Since a minimal demolishing phase can generate a minimal sequence, we may focus on finding minimal demolishing phases.
+\end{itemize}
+
+\section{Stacks}
+\subsection{Number of Stacks}
+\begin{itemize}
+
+    \item Suppose $S$ is a minimal demolishing sequence of $n$ discs with $k$ pegs.
+    \item At the end of $S$, that is when we make the move $(n,\infty,\infty)$ we may observe the stacks of discs.
+    \item We let $j_1<j_2<...,<j_{k-3}<n-1<n$ denote the stack bottoms.
+    \item As long as $n>k-1$ the only empty peg will be the source, as disc $n$ has just moved off of it. N.B. When $n<=k-1$ there is a  
+    \item minimal demolishing phase of length $n$ that is easy to calculate.
+
+    \item I will prove that $n>k-1$ implies $k-1$ stacks at the end of a minimal demolishing sequence $S$:
+    \item Suppose $S$ is a minimal demolishing sequence.
+    \item If some there is some disc $d$ that moves to the empty stack via $(d,d+1,\infty)$ when it is cleared, it must also leave the stack, \item otherwise it wouldn't be empty. So we must have $(d,\inf,x)$ for some $x$, possibly $x$ a stack bottom.
+    \item If we remove $(d,\inf,x)$ from $S$ to form $S'$, we see $S'$ is shorter than $S$, hence $S$ can't be minimal. The contradiction implies we have $k-1$ stacks.
+    \item We also consider the case where a peg is never occupied at all.
+    \item In this case we can derive a minimal demolishing sequence shorter than $S$ by taking $d$ some non-stack bottom, occurring in triples 
+    \item $(d,d+1,\inf)$,...,$(d,\inf,x)$ where there are at least two triples since $d$ isn't a stack-bottom. 
+    \item Removing all of the above triples from $S$ and instead sending $d$ to the empty stack as soon as it's freed via $(d,d+1,\inf)$ we have constructed a minimal demolishing sequence shorter than $S$. The contradiction implies we must certainly have $k-1$ stacks.
+\end{itemize}
+
+\subsubsection{Distribution of Stacks}
+\begin{itemize}
+\item When $n$ is freed, the $k-1$ stacks are distributed as follows:
+\\$j_1,j_1-1,...2,1$
+\\$j_2,j_2-1,...j_1+2,j_1+1$
+\\$j_3,j_3-1,...j_2+2,j_2+1$
+\\....
+\\$j_{k-3},j_{k-3}-1,.....j_{k-2}+1$
+\\$n-1,n-2,....j_{k-3}+1$
+\\$n$
+\item To see that this is true, first recall that a disc can only be stacked on a larger disk, so we couldn't have $j_{k-3}$ on $j_1$'s stack, for example.
+\item Now suppose $S$ is a minimal demolishing sequence and we have a disk $j_{i-1} \leq d \leq j_i$, the smallest element
+on $j_{r}$'s stack, where $r>i$
+\item We know $d$'s first move is $(d,d+1,\infty)$
+\item We could have $d$ moving before it moves to $j_{r}$'s stack, e.g. $(d,\infty,x),(d,x,x'),(d,x',x'')$ etc.
+\item Eventually we have $(d,y,j_{r-1}+1)$ for some $y$
+\item We may construct a minimal demolishing sequence $S'$ by sending $d$ to its proper stack as soon as $d+1$ gets pushed onto that         stack, which will free up the later moves to use more pegs and shorten the sequence.
+\end{itemize}
+
+\section{Subsequences}
+\begin{itemize}
+\item For a minimal demolishing sequence $S={(1,2,\infty),(2,3,\infty),...(n,\infty,\infty)}$,
+we must have $|S|=\frac{H_K(n)+1}{2}$
+\item First we move $j_1$ disks to a non-target peg using k pegs.
+\item Let $S_1={S_1^D,S_1^R}={{(1,2,\infty)(2,3,\infty).(j_1,j_1+1,\infty)}{(j_1-1,\inf,j_1)...(1,\infty,2)}}$
+\item Since $S$ is a minimal demolishing sequence, $S_1$ must be a minimal sequence of $j_1$ discs using $k$ pegs--if $S_1$ wasn't minimal, we could find $S_1'$ shorter than $S_1$ and use it to contradict minimality of S. Let $S_1^*$ be the symmetric reflection of \item $S_1$ with similar notation for the following subproblems
+\item $|S_1|=H_K(j_1)=|S_1^D|+|S_1^R|=\frac{H_K(j_1)+1}{2}+\frac{H_K(j_i)-1}{2}$
+\item So $S_1^D$ must be a minimal demolishing sequence of $j_1$ disks using $k$ pegs. If $|S_1|$ isn't symmetric, we can set $S_1^R$ as the symmetric reflection of $s_1^D$ to generate a minimal symmetric sequence. We see that existence of a minimal demolishing sequence ensures existence of a minimal symmetric sequence.
+\item Also note that when we generate the entire $n$ disk demolishing and reconstructing solution we will calculate the reconstruction phase by symmetry. In the reconstruction phase, moving the $j_1$ disks to the target peg using $k$ pegs is the last step.
+\item Next we move $j_2-j_1$ disks using $k-1$ pegs
+\item We can define $S_2={S_2^D,S_2^R}$. Analogous to the above subproblem, $S_2^D$ must be a minimal demolishing sequence, we use symmetry to get the reconstruction phase, and let $S_2^*$ denote the symmetric reflection of $S_2$
+\item Moving $(n-1,n-2,....j_{k-3}+1)$ using $3$ pegs generates $S_{k-2}$
+\item Moving the bottom disk with $k=2$ gives $S_{k-1}$
+\item We can see $(S,S*)=(S_1,S_2,..,S_{k-2},S_{k-1},S_{k-2},S_{k-3},S_{k-2}*,...,S_2*,S_1*)$
+\end{itemize}
+$$|(S,S*)|=H_K(n)=1+2H_K(j_1)+2*H_{K-1}(j_2-j_1)+$$
+$$2*H_{K-2}(j_3-j_2)+\dots+$$
+$$2*H_{4}(j_{k-3}-j_{k-2})+$$
+$$2*H_{3}(n-1-j_{k-3})$$
+
+\section{Complexity}
+\begin{itemize}
+\item Next define sufficient symmetry conditions, and demonstrate why the example in Hinz et al.is degenerate
+\item Derive the optimal bound
+
+\end{itemize}
+
+\end{document}
